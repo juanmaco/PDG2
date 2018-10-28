@@ -15,8 +15,11 @@ namespace Sample
     {
         public Animator anim;
         public GameObject obstaculo;
+        public GameObject puente;
         public GameObject cauca;
         private float speed;
+
+
         protected override void Awake()
         {
             base.Awake();
@@ -30,9 +33,10 @@ namespace Sample
         void OnTargetFound(TargetAbstractBehaviour behaviour)
         {
             Debug.Log("Found: " + Target.Id);
-            anim.SetInteger("Anim", 1);
+            anim.SetInteger("Anim", 0);
             obstaculo.SetActive(false);
-            cauca.GetComponent<MoveToPoints>().speed = speed + 3;
+            cauca.GetComponent<MoveToPoints>().speed = speed + 0;
+            puente.SetActive(true);
         }
 
         void OnTargetLost(TargetAbstractBehaviour behaviour)
@@ -41,6 +45,7 @@ namespace Sample
             anim.SetInteger("Anim", 0);
             obstaculo.SetActive(true);
             cauca.GetComponent<MoveToPoints>().speed = speed;
+            puente.SetActive(false);
         }
 
         void OnTargetLoad(ImageTargetBaseBehaviour behaviour, ImageTrackerBaseBehaviour tracker, bool status)

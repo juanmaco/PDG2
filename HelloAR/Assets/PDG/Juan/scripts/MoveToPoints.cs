@@ -21,6 +21,9 @@ public class MoveToPoints : MonoBehaviour
     public GameObject monita;
     public Animator anim;
     float currentSpeed;
+    int recolectables=0;
+    public GameObject[] prickups;
+    bool activar = false;
     
 
 	//setup
@@ -59,6 +62,7 @@ public class MoveToPoints : MonoBehaviour
 	{
         RotatePos();
         PickUp();
+        EliminatePick();
 		//if we've arrived at waypoint, get the next one
 		if(waypoints.Count > 0)
 		{
@@ -80,7 +84,8 @@ public class MoveToPoints : MonoBehaviour
 				}
 			}
 		}
-		//if this is an enemy, move them toward the current waypoint
+        //if this is an enemy, move them toward the current waypoint
+        Debug.Log(recolectables);
 
 	}
 	
@@ -142,13 +147,32 @@ public class MoveToPoints : MonoBehaviour
         {
             anim.SetInteger("Anim", 2);
             speed = 0;
-        } 
+        }
     }
     private void PickUp()
     {
         if (arrived == true)
         {
             anim.SetInteger("Anim", 3);
+        }
+    }
+    private void EliminatePick()
+    {
+        if(currentWp == 1)
+        {
+            prickups[0].SetActive(false);
+        }
+        if (currentWp == 2 )
+        {
+            prickups[1].SetActive(false);
+        }
+        if (currentWp == 3)
+        {
+            prickups[2].SetActive(false);
+        }
+        if (currentWp == 4)
+        {
+            prickups[3].SetActive(false);
         }
     }
 }
