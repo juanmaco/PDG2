@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 //moves object along a series of waypoints, useful for moving platforms or hazards
 //this class adds a kinematic rigidbody so the moving object will push other rigidbodies whilst moving
+namespace Sample {
 [RequireComponent(typeof(Rigidbody))]
 public class MoveToPoints : MonoBehaviour 
 {
@@ -24,7 +25,11 @@ public class MoveToPoints : MonoBehaviour
     int recolectables=0;
     public GameObject[] prickups;
     bool activar = false;
-    
+    public SampleImageTargetBehaviour[] myTargets;
+	public GameObject[] obstaculo;
+	public GameObject puente;
+        public AudioClip[] ayudas;
+        public AudioSource sonido;
 
 	//setup
 	void Awake()
@@ -61,6 +66,7 @@ public class MoveToPoints : MonoBehaviour
 	void Update()
 	{
         RotatePos();
+		OnSee();
         PickUp();
         EliminatePick();
 		//if we've arrived at waypoint, get the next one
@@ -145,6 +151,7 @@ public class MoveToPoints : MonoBehaviour
     {
         if (collision.gameObject.tag == "Wall")
         {
+                StartCoroutine(Sound());
             anim.SetInteger("Anim", 2);
             speed = 0;
         }
@@ -175,6 +182,29 @@ public class MoveToPoints : MonoBehaviour
             prickups[3].SetActive(false);
         }
     }
+	void OnSee(){
+		if(myTargets[1].ReturnState()==true){
+			obstaculo[1].SetActive(false);
+		}
+		if(myTargets[0].ReturnState()==true){
+			obstaculo[0].SetActive(false);
+			puente.SetActive(true);
+		}
+		if(myTargets[2].ReturnState()==true){
+			obstaculo[2].SetActive(false);
+		}
+}
+        IEnumerator Sound()
+        {
+            yield return new WaitForSeconds(2f);
+            for (int i = 0; i<ayudas.Length; i++)
+            {
+                sonido.clip = ayudas[i];
+                sonido.Play();
+            }
+            yield return new WaitForSeconds(2f);
+        }
+}
 }
 
 /* NOTE: remember to tag object as "Moving Platform" if you want the player to be able to stand and move on it

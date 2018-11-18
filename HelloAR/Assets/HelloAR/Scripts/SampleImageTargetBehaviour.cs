@@ -18,6 +18,7 @@ namespace Sample
         public GameObject puente;
         public GameObject cauca;
         private float speed;
+        bool isActive=false;
 
 
         protected override void Awake()
@@ -34,18 +35,20 @@ namespace Sample
         {
             Debug.Log("Found: " + Target.Id);
             anim.SetInteger("Anim", 0);
-            obstaculo.SetActive(false);
+            //obstaculo.SetActive(false);
             cauca.GetComponent<MoveToPoints>().speed = speed + 0;
-            puente.SetActive(true);
+            //puente.SetActive(true);
+            isActive= true;
         }
 
         void OnTargetLost(TargetAbstractBehaviour behaviour)
         {
             Debug.Log("Lost: " + Target.Id);
             anim.SetInteger("Anim", 0);
-            obstaculo.SetActive(true);
+            //obstaculo.SetActive(true);
             cauca.GetComponent<MoveToPoints>().speed = speed;
-            puente.SetActive(false);
+            //puente.SetActive(false);
+            isActive=false;
         }
 
         void OnTargetLoad(ImageTargetBaseBehaviour behaviour, ImageTrackerBaseBehaviour tracker, bool status)
@@ -56,6 +59,9 @@ namespace Sample
         void OnTargetUnload(ImageTargetBaseBehaviour behaviour, ImageTrackerBaseBehaviour tracker, bool status)
         {
             Debug.Log("Unload target (" + status + "): " + Target.Id + " (" + Target.Name + ") " + " -> " + tracker);
+        }
+        public bool ReturnState(){
+            return isActive;
         }
     }
 }
